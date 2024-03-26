@@ -25,14 +25,15 @@ $ docker ps
 
 Now you have Pinot and Kafka running locally in Docker. Next steps:  
 1. Produce messages to Kafka topic  
-1.1 You can do that by writing your own script or shell to Kafka
+1.1. You can do that by writing your own script or shell to Kafka  
 
 2. Create schema and realtime table config in Pinot  
 https://docs.pinot.apache.org/basics/data-import/pinot-stream-ingestion/import-from-apache-kafka#schema  
 
-3. Go to Pinot Query Console and query your new realtime table
+3. Go to Pinot Query Console and query your new realtime table  
+http://localhost:9000/#/query  
 
 # Source
-https://docs.pinot.apache.org/basics/getting-started/running-pinot-in-docker
-https://kafka.apache.org/documentation/#listener_configuration
-https://docs.pinot.apache.org/basics/data-import/pinot-stream-ingestion/import-from-apache-kafka#table-config
+https://docs.pinot.apache.org/basics/getting-started/running-pinot-in-docker  
+https://kafka.apache.org/documentation/#listener_configuration  
+https://docs.pinot.apache.org/basics/data-import/pinot-stream-ingestion/import-from-apache-kafka#table-config  
