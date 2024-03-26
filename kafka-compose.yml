@@ -1,0 +1,70 @@
+version: '3.7'
+services:
+  pinot-zookeeper:
+    image: zookeeper:3.5.6
+    container_name: pinot-zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - pinot-demo
+
+  pinot-controller:
+    image: apachepinot/pinot:1.0.0
+    command: "StartController -zkAddress pinot-zookeeper:2181"
+    container_name: pinot-controller
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+    depends_on:
+      - pinot-zookeeper
+    networks:
+      - pinot-demo
+
+  pinot-broker:
+    image: apachepinot/pinot:1.0.0
+    command: "StartBroker -zkAddress pinot-zookeeper:2181"
+    restart: unless-stopped
+    container_name: "pinot-broker"
+    ports:
+      - "8099:8099"
+    depends_on:
+      - pinot-controller
+    networks:
+      - pinot-demo
+
+  pinot-server:
+    image: apachepinot/pinot:1.0.0
+    command: "StartServer -zkAddress pinot-zookeeper:2181"
+    restart: unless-stopped
+    container_name: "pinot-server"
+    ports:
+      - "8098:8098"
+    depends_on:
+      - pinot-broker
+    networks:
+      - pinot-demo
+
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kafka
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: pinot-zookeeper:2181
+      KAFKA_LISTENERS: INTERNAL://:9092, EXTERNAL://:9093
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092, EXTERNAL://localhost:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSET_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - pinot-zookeeper
+    networks:
+      - pinot-demo
+
+networks:
+  pinot-demo:
+    name: pinot-demo
