@@ -1,0 +1,19 @@
+{
+    "schemaName": "demotopic",
+    "dimensionFieldSpecs": [
+      {
+        "name": "message",
+        "dataType": "STRING"
+      }
+    ],
+    "metricFieldSpecs": [],
+    "dateTimeFieldSpecs": [
+      {
+        "name": "timestamp_ns",
+        "dataType": "TIMESTAMP",
+        "format": "1:MILLISECONDS:EPOCH",
+        "granularity": "1:MILLISECONDS"
+      }
+    ]
+  }
+  
